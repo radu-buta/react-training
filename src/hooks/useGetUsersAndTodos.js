@@ -1,5 +1,5 @@
-import useGetTodosQuery from "services/todos";
-import useGetUsersQuery from "services/users";
+import { useGetTodosQuery } from "services/todos";
+import { useGetUsersQuery } from "services/users";
 
 export default function useGetUsersAndTodos() {
   const {
@@ -13,4 +13,19 @@ export default function useGetUsersAndTodos() {
     isLoading: isGetUsersLoading,
     error: getUsersError,
   } = useGetUsersQuery();
+
+  const isLoading = isGetTodoLoading || isGetUsersLoading;
+
+  const errors = [getTodosError, getUsersError];
+  const isError = errors.some((error) => error);
+
+  return {
+    isLoading,
+    data: {
+      todos,
+      users,
+    },
+    errors: [getTodosError, getUsersError],
+    isError,
+  };
 }

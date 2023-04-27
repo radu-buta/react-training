@@ -1,21 +1,16 @@
 import { updateTodo } from "api/updateTodo";
 
-import { useGetTodosQuery } from "services/todos";
-
 import Loader from "components/Loader";
-import { useGetUsersQuery } from "services/users";
+
+import { useGetUsersAndTodos } from "hooks";
 
 export default function SeeTodos() {
   const {
-    data: todos,
-    isLoading: isGetTodoLoading,
-    error: getTodosError,
-  } = useGetTodosQuery();
-  const {
-    data: users,
-    isLoading: isGetUsersLoading,
-    error: getUsersError,
-  } = useGetUsersQuery();
+    data: { todos, users },
+    errors,
+    isError,
+    isLoading,
+  } = useGetUsersAndTodos();
 
   function findUserById(id) {
     const userFound = users.find((user) => user.id === id);
@@ -48,9 +43,6 @@ export default function SeeTodos() {
       </select>
     );
   };
-
-  const errors = [getTodosError, getUsersError];
-  const isError = errors.some((error) => error);
 
   const renderError = () => {
     return (
@@ -93,5 +85,5 @@ export default function SeeTodos() {
     );
   };
 
-  return isGetTodoLoading || isGetUsersLoading ? <Loader /> : renderTodos();
+  return isLoading ? <Loader /> : renderTodos();
 }
