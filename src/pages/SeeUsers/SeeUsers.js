@@ -1,22 +1,36 @@
-import { useEffect, useState } from "react";
-import { getUsers } from "api/getUsers";
+import { useGetUsersQuery } from "services/users";
+import Loader from "components/Loader";
 
 export default function SeeUsers() {
-  const [users, setUsers] = useState([]);
-  const [errorState, setErrorState] = useState("");
+  const {
+    data: users,
+    isLoading: isGetUsersLoading,
+    error: getUsersError,
+  } = useGetUsersQuery();
 
-  async function fetchUsers() {
-    const usersData = await getUsers();
-    if (usersData.success) {
-      setUsers(usersData.data);
-    } else {
-      setErrorState(usersData.errorMessage);
-    }
-  }
+  const errors = [getUsersError];
+  const isError = errors.some((error) => error);
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  const renderError = () => {
+    return (
+      <div>
+        Error:
+        {errors.forEach((error) => {
+          if (error) return <>{error.status}</>;
+        })}
+      </div>
+    );
+  };
 
-  return <p>Users list</p>;
+  const renderUsers = () => {
+    return (
+      <ul>
+        {isError
+          ? renderError()
+          : users.map((user) => <li key={user.id}>{user.data.name}</li>)}
+      </ul>
+    );
+  };
+
+  return isGetUsersLoading ? <Loader /> : renderUsers();
 }

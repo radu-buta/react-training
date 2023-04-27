@@ -5,6 +5,7 @@ const baseQuery = fetchBaseQuery({ baseUrl: "https://z1fpom-3001.csb.app/" });
 const apiClient = createApi({
   baseQuery,
   endpoints: () => ({}),
+  tagTypes: ["Todo", "User"],
 });
 
 export default apiClient;

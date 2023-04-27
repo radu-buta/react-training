@@ -3,8 +3,6 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
 
-import store from "./data/store";
-
 import Main from "./pages/Main";
 import AddTodo from "./pages/AddTodo";
 import PageNotFound from "./pages/PageNotFound";
@@ -12,6 +10,8 @@ import SeeTodos from "./pages/SeeTodos";
 import SeeUsers from "pages/SeeUsers";
 
 import * as routes from "./routes";
+
+import store from "services/store";
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
