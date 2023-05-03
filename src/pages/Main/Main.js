@@ -17,6 +17,7 @@ export default function Main() {
       <div>
         <NavbarLink to={routes.ADD_TODO} label="Add TODO" />
         <NavbarLink to={routes.SEE_TODOS} label="See TODOs" />
+        <NavbarLink to={routes.EDIT_TODO} label="Edit TODO" />
         <NavbarLink to={routes.SEE_USERS} label="See Users" />
       </div>
       <br />

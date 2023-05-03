@@ -7,7 +7,8 @@ import Main from "./pages/Main";
 import AddTodo from "./pages/AddTodo";
 import PageNotFound from "./pages/PageNotFound";
 import SeeTodos from "./pages/SeeTodos";
-import SeeUsers from "pages/SeeUsers";
+import EditTodo from "./pages/EditTodo/EditTodo";
+import SeeUsers from "./pages/SeeUsers";
 
 import * as routes from "./routes";
 
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: routes.SEE_TODOS,
         element: <SeeTodos />,
+      },
+      {
+        path: `${routes.EDIT_TODO}/:${routes.PARAMS.TODO_ID}`,
+        element: <EditTodo />,
       },
       {
         path: routes.SEE_USERS,

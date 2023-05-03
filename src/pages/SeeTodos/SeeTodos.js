@@ -1,10 +1,13 @@
+import { useNavigate } from "react-router-dom";
+import * as routes from "../../routes";
+
 import { updateTodo } from "api/updateTodo";
-
 import Loader from "components/Loader";
-
 import { useGetUsersAndTodos } from "hooks";
 
 export default function SeeTodos() {
+  const navigate = useNavigate();
+
   const {
     data: { todos, users },
     errors,
@@ -26,9 +29,10 @@ export default function SeeTodos() {
     updateTodo(todoId, newTodoData);
   }
 
-  function handleEditTodo(event) {
-    console.log(event.target.id);
-  }
+  const onButtonClick = (event) => {
+    const todoId = Number(event.target.id);
+    navigate(`${routes.EDIT_TODO}/${todoId}`);
+  };
 
   const renderUserSelector = ({ todoId }) => {
     return (
@@ -71,7 +75,7 @@ export default function SeeTodos() {
                       <i style={{ marginInline: 8 }}>
                         - Assigned to {foundUser.data.name}
                       </i>
-                      <button id={todo.id} onClick={handleEditTodo}>
+                      <button id={todo.id} onClick={onButtonClick}>
                         Edit
                       </button>
                     </>
