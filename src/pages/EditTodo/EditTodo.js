@@ -2,6 +2,9 @@ import { useParams } from "react-router-dom";
 
 import { useGetUsersAndTodos } from "hooks";
 
+import { updateTodo } from "api/updateTodo";
+import { useState } from "react";
+
 import Loader from "components/Loader";
 import { PARAMS } from "routes";
 
@@ -15,11 +18,10 @@ export default function EditTodo() {
     isLoading,
   } = useGetUsersAndTodos();
 
-  function findTodoById(id) {
-    const todoData = todos.find((todo) => todo.data === id);
-    return todoData;
+  function findTodoDataById(id) {
+    return todos.find((todo) => todo.id === id);
   }
-  console.log(findTodoById(todoId));
+  const todoData = findTodoDataById(todoId);
 
   const renderError = () => {
     return (
@@ -33,26 +35,33 @@ export default function EditTodo() {
   };
 
   const renderChangeCurrentTodo = () => {
+    const [newTodo, setNewTodo] = useState("");
+    const [isUpdateSuccessful, setIsUpdateSuccessful] = useState(undefined);
+
+    function handleChange(event) {
+      setNewTodo(event.target.value);
+      setIsUpdateSuccessful(undefined);
+    }
+
+    async function onButtonClick() {
+      const todoData = todos.find((todo) => todo.id === todoId);
+      const newTodoData = { ...todoData, data: newTodo };
+
+      const updatedTodo = await updateTodo(todoId, newTodoData);
+      setIsUpdateSuccessful(updatedTodo.success);
+    }
+
     return (
       <>
-        <p>Current todo item: {todoId}</p>
-        <p>Current todo item: {findTodoById(todoId)}</p>
-
-        {todos.map((todo) => {
-          return (
-            <>
-              <p>{todo.data}</p>
-            </>
-          );
-        })}
+        <p>{todoData.data}</p>
 
         <div>
-          <input type="text" />
-          <button>Update</button>
+          <input type="text" value={newTodo} onChange={handleChange} />
+          <button onClick={onButtonClick}>Update</button>
 
-          {typeof postSuccess === "boolean" &&
-            (postSuccess ? (
-              <p>Post added successfully</p>
+          {typeof isUpdateSuccessful === "boolean" &&
+            (isUpdateSuccessful ? (
+              <p>Item updated successfully</p>
             ) : (
               <p>Something went wrong</p>
             ))}
