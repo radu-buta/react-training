@@ -19,7 +19,7 @@ export default function EditTodo() {
   } = useGetUsersAndTodos();
 
   function findTodoDataById(id) {
-    return todos.find((todo) => todo.id === id);
+    return todos.find((todo) => todo.id === Number(id));
   }
   const todoData = findTodoDataById(todoId);
 
@@ -44,7 +44,7 @@ export default function EditTodo() {
     }
 
     async function onButtonClick() {
-      const todoData = todos.find((todo) => todo.id === todoId);
+      const todoData = todos.find((todo) => todo.id === Number(todoId));
       const newTodoData = { ...todoData, data: newTodo };
 
       const updatedTodo = await updateTodo(todoId, newTodoData);

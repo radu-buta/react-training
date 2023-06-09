@@ -16,21 +16,21 @@ export default function SeeTodos() {
   } = useGetUsersAndTodos();
 
   function findUserById(id) {
-    const userFound = users.find((user) => user.id == id);
+    const userFound = users.find((user) => user.id === Number(id));
     return userFound;
   }
 
   function handleChange(event) {
-    const todoId = event.target.id;
-    const userId = event.target.value;
-    const todoData = todos.find((todo) => todo.id === todoId);
+    const todoId = Number(event.target.id);
+    const userId = Number(event.target.value);
+    const todoData = todos.find((todo) => Number(todo.id) === todoId);
     const newTodoData = { ...todoData, assignedTo: userId };
 
     updateTodo(todoId, newTodoData);
   }
 
   const onButtonClick = (event) => {
-    const todoId = event.target.id;
+    const todoId = Number(event.target.id);
     navigate(`${routes.EDIT_TODO}/${todoId}`);
   };
 
