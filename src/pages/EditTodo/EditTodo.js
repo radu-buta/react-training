@@ -19,7 +19,9 @@ export default function EditTodo() {
   } = useGetUsersAndTodos();
 
   function findTodoDataById(id) {
-    return todos.find((todo) => todo.id === Number(id));
+    const todo = todos.find((todo) => todo.id === Number(id));
+    if(!todo) return;
+    return todo.data;
   }
   const todoData = findTodoDataById(todoId);
 
@@ -53,7 +55,7 @@ export default function EditTodo() {
 
     return (
       <>
-        <p>{todoData.data}</p>
+        <p>{todoData}</p>
 
         <div>
           <input type="text" value={newTodo} onChange={handleChange} />
