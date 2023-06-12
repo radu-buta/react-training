@@ -9,6 +9,9 @@ import Loader from "components/Loader";
 import { PARAMS } from "routes";
 
 export default function EditTodo() {
+  const [newTodoValue, setNewTodoValue] = useState("");
+  const [isUpdateSuccessful, setIsUpdateSuccessful] = useState(undefined);
+
   const { [PARAMS.TODO_ID]: todoId } = useParams();
 
   const {
@@ -18,12 +21,13 @@ export default function EditTodo() {
     isLoading,
   } = useGetUsersAndTodos();
 
-  function findTodoDataById(id) {
+  function findTodoById(id) {
     const todo = todos.find((todo) => todo.id === Number(id));
-    if(!todo) return;
-    return todo.data;
+    if (!todo) return;
+    return todo;
   }
-  const todoData = findTodoDataById(todoId);
+  const currentTodo = findTodoById(todoId);
+    console.log(currentTodo);
 
   const renderError = () => {
     return (
@@ -36,44 +40,35 @@ export default function EditTodo() {
     );
   };
 
-  const renderChangeCurrentTodo = () => {
-    const [newTodo, setNewTodo] = useState("");
-    const [isUpdateSuccessful, setIsUpdateSuccessful] = useState(undefined);
+  function handleChange(event) {
+    setNewTodoValue(event.target.value);
+    setIsUpdateSuccessful(undefined);
+  }
 
-    function handleChange(event) {
-      setNewTodo(event.target.value);
-      setIsUpdateSuccessful(undefined);
-    }
+  async function onButtonClick() {
+    const newTodoData = { ...currentTodo, data: newTodoValue };
 
-    async function onButtonClick() {
-      const todoData = todos.find((todo) => todo.id === Number(todoId));
-      const newTodoData = { ...todoData, data: newTodo };
-
-      const updatedTodo = await updateTodo(todoId, newTodoData);
-      setIsUpdateSuccessful(updatedTodo.success);
-    }
-
-    return (
-      <>
-        <p>{todoData}</p>
-
-        <div>
-          <input type="text" value={newTodo} onChange={handleChange} />
-          <button onClick={onButtonClick}>Update</button>
-
-          {typeof isUpdateSuccessful === "boolean" &&
-            (isUpdateSuccessful ? (
-              <p>Item updated successfully</p>
-            ) : (
-              <p>Something went wrong</p>
-            ))}
-        </div>
-      </>
-    );
-  };
+    const updatedTodo = await updateTodo(todoId, newTodoData);
+    setIsUpdateSuccessful(updatedTodo.success);
+  }
 
   const renderTodo = () => {
-    return isError ? renderError() : renderChangeCurrentTodo();
+    return isError ? renderError() :
+        <>
+          <p>{currentTodo.data}</p>
+
+          <div>
+            <input type="text" value={newTodoValue} onChange={handleChange} />
+            <button onClick={onButtonClick}>Update</button>
+
+            {typeof isUpdateSuccessful === "boolean" &&
+                (isUpdateSuccessful ? (
+                    <p>Item updated successfully</p>
+                ) : (
+                    <p>Something went wrong</p>
+                ))}
+          </div>
+        </>
   };
 
   return isLoading ? <Loader /> : renderTodo();
