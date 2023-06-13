@@ -1,2 +1,2 @@
-export const TODOS_ENDPOINT = `https://z1fpom-3001.csb.app/todos`;
-export const USERS_ENDPOINT = "https://z1fpom-3001.csb.app/users";
+export const TODOS_ENDPOINT = `http://localhost:3001/todos`;
+export const USERS_ENDPOINT = `http://localhost:3001/users`;

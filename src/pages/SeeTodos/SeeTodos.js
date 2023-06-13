@@ -1,10 +1,13 @@
+import { useNavigate } from "react-router-dom";
+import * as routes from "../../routes";
+
 import { updateTodo } from "api/updateTodo";
-
 import Loader from "components/Loader";
-
 import { useGetUsersAndTodos } from "hooks";
 
 export default function SeeTodos() {
+  const navigate = useNavigate();
+
   const {
     data: { todos, users },
     errors,
@@ -13,22 +16,23 @@ export default function SeeTodos() {
   } = useGetUsersAndTodos();
 
   function findUserById(id) {
-    const userFound = users.find((user) => user.id === id);
+    const userFound = users.find((user) => user.id === Number(id));
     return userFound;
   }
 
   function handleChange(event) {
     const todoId = Number(event.target.id);
     const userId = Number(event.target.value);
-    const todoData = todos.find((todo) => todo.id === todoId);
+    const todoData = todos.find((todo) => Number(todo.id) === todoId);
     const newTodoData = { ...todoData, assignedTo: userId };
 
     updateTodo(todoId, newTodoData);
   }
 
-  function handleEditTodo(event) {
-    console.log(event.target.id);
-  }
+  const onButtonClick = (event) => {
+    const todoId = Number(event.target.id);
+    navigate(`${routes.EDIT_TODO}/${todoId}`);
+  };
 
   const renderUserSelector = ({ todoId }) => {
     return (
@@ -71,7 +75,7 @@ export default function SeeTodos() {
                       <i style={{ marginInline: 8 }}>
                         - Assigned to {foundUser.data.name}
                       </i>
-                      <button id={todo.id} onClick={handleEditTodo}>
+                      <button id={todo.id} onClick={onButtonClick}>
                         Edit
                       </button>
                     </>
