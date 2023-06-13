@@ -26,8 +26,8 @@ export default function EditTodo() {
     if (!todo) return;
     return todo;
   }
+
   const currentTodo = findTodoById(todoId);
-    console.log(currentTodo);
 
   const renderError = () => {
     return (
@@ -53,22 +53,25 @@ export default function EditTodo() {
   }
 
   const renderTodo = () => {
-    return isError ? renderError() :
-        <>
-          <p>{currentTodo.data}</p>
+    return isError ? (
+      renderError()
+    ) : (
+      <>
+        <p>{currentTodo.data}</p>
 
-          <div>
-            <input type="text" value={newTodoValue} onChange={handleChange} />
-            <button onClick={onButtonClick}>Update</button>
+        <div>
+          <input type="text" value={newTodoValue} onChange={handleChange} />
+          <button onClick={onButtonClick}>Update</button>
 
-            {typeof isUpdateSuccessful === "boolean" &&
-                (isUpdateSuccessful ? (
-                    <p>Item updated successfully</p>
-                ) : (
-                    <p>Something went wrong</p>
-                ))}
-          </div>
-        </>
+          {typeof isUpdateSuccessful === "boolean" &&
+            (isUpdateSuccessful ? (
+              <p>Item updated successfully</p>
+            ) : (
+              <p>Something went wrong</p>
+            ))}
+        </div>
+      </>
+    );
   };
 
   return isLoading ? <Loader /> : renderTodo();
