@@ -1,18 +1,19 @@
-import { postTodo } from "api/postTodo";
+// import { postTodo } from "api/postTodo";
 import { useState } from "react";
+import { usePostTodoMutation } from "../../services/todos";
 
 export default function AddTodo() {
   const [newTodo, setNewTodo] = useState("");
-  const [postSuccess, setPostSuccess] = useState(undefined);
+
+  const [create, { error, isError, reset, isSuccess }] = usePostTodoMutation();
 
   function handleChange(event) {
     setNewTodo(event.target.value);
-    setPostSuccess(undefined);
+    reset();
   }
 
   async function onButtonClick() {
-    const postResult = await postTodo(newTodo);
-    setPostSuccess(postResult.success);
+    await create(newTodo);
   }
 
   return (
@@ -22,12 +23,8 @@ export default function AddTodo() {
         <input type="text" value={newTodo} onChange={handleChange} />
         <button onClick={onButtonClick}>Add this</button>
 
-        {typeof postSuccess === "boolean" &&
-          (postSuccess ? (
-            <p>Post added successfully</p>
-          ) : (
-            <p>Something went wrong</p>
-          ))}
+        {isError && <p>{error.error}</p>}
+        {isSuccess && <p>Post added successfully</p>}
       </div>
     </div>
   );

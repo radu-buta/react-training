@@ -2,8 +2,12 @@ import apiClient from "./api";
 
 export const todosApi = apiClient.injectEndpoints({
   endpoints: (builder) => ({
+    // endpoint
     getTodos: builder.query({
-      query: () => ({ url: "todos" }),
+      query: () => ({
+        url: "todos",
+        method: "GET", // this is by default
+      }),
       providesTags: (result = []) =>
         result
           ? [
@@ -16,7 +20,14 @@ export const todosApi = apiClient.injectEndpoints({
             ]
           : [],
     }),
+    postTodo: builder.mutation({
+      query: (todo) => ({
+        url: "todos",
+        method: "POST",
+        body: { data: todo },
+      }),
+    }),
   }),
 });
 
-export const { useGetTodosQuery } = todosApi;
+export const { useGetTodosQuery, usePostTodoMutation } = todosApi;
