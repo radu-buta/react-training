@@ -14,7 +14,7 @@ export default function SeeUsers() {
     return (
       <div>
         Error:
-        {errors.forEach((error) => {
+        {errors.map((error) => {
           if (error) return <>{error.status}</>;
         })}
       </div>

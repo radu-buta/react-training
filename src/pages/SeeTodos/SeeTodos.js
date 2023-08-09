@@ -52,7 +52,7 @@ export default function SeeTodos() {
     return (
       <div>
         Error
-        {errors.forEach((error) => {
+        {errors.map((error) => {
           if (error) return <>{error.status}</>;
         })}
       </div>
