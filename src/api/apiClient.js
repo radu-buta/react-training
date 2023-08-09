@@ -1,20 +1,8 @@
 class Api {
   #client;
+
   constructor(client) {
     this.#client = client;
-  }
-
-  async get(endpoint) {
-    try {
-      // this was made to support fetch Api
-      const response = await this.#client(endpoint);
-      const jsonData = await response.json();
-
-      // success is a convention that suggests if the request went through.
-      return { success: true, data: jsonData };
-    } catch (error) {
-      return { success: false, errorMessage: `Something went wrong: ${error}` };
-    }
   }
 
   async post(endpoint, bodyData) {
@@ -34,8 +22,8 @@ class Api {
       return { success: false, errorMessage: `Something went wrong: ${error}` };
     }
   }
-  
-    async put(endpoint, bodyData) {
+
+  async put(endpoint, bodyData) {
     try {
       const response = await this.#client(endpoint, {
         method: "PUT", // *GET, POST, PUT, DELETE, etc.
