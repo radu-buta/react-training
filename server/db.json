@@ -3,86 +3,33 @@
     {
       "id": 1,
       "assignedTo": 2,
-      "data": "hjhjh"
+      "data": "edited"
     },
     {
+      "data": "Lorem ipsum",
       "id": 2,
-      "assignedTo": 3,
-      "data": "qwqwqw"
-    },
-    {
-      "id": 3,
-      "data": "updateee4",
       "assignedTo": 2
     },
     {
-      "data": "another update",
+      "data": "test ",
+      "id": 3
+    },
+    {
+      "data": "test test",
       "id": 4,
-      "assignedTo": 3
-    },
-    {
-      "data": "4th item",
-      "id": 5,
-      "assignedTo": 1
-    },
-    {
-      "assignedTo": 2,
-      "id": 6,
-      "data": "blahblahblah"
-    },
-    {
-      "data": "Add TESST",
-      "id": 7,
       "assignedTo": 2
     },
     {
-      "data": "12 test",
-      "id": 8,
-      "assignedTo": 2
+      "data": "anotherOne",
+      "id": 5
     },
     {
-      "data": "updated todo",
-      "id": 9,
-      "assignedTo": 2
-    },
-    {
-      "data": "updated olala",
-      "id": 10,
-      "assignedTo": 2
+      "data": "hopefully yes",
+      "id": 6
     },
     {
       "data": "test",
-      "id": 11,
-      "assignedTo": 3
-    },
-    {
-      "data": "wwww",
-      "id": 12,
-      "assignedTo": 2
-    },
-    {
-      "data": "Test Mutation",
-      "id": 13
-    },
-    {
-      "data": "testtest",
-      "id": 14
-    },
-    {
-      "data": "another1",
-      "id": 15
-    },
-    {
-      "data": "sss",
-      "id": 16
-    },
-    {
-      "data": "asadsad",
-      "id": 17
-    },
-    {
-      "data": "zsa",
-      "id": 18
+      "id": 7
     }
   ],
   "users": [

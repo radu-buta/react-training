@@ -8,17 +8,10 @@ export const todosApi = apiClient.injectEndpoints({
         url: "todos",
         method: "GET", // this is by default
       }),
-      providesTags: (result = []) =>
+      providesTags: (result) =>
         result
-          ? [
-              result.map(({ id, data, assignedTo }) => ({
-                type: "Todo",
-                id,
-                data,
-                assignedTo,
-              })),
-            ]
-          : [],
+          ? [...result.map(({ id }) => ({ type: "Todo", id })), "Todo"]
+          : ["Todo"],
     }),
     postTodo: builder.mutation({
       query: (todo) => ({
@@ -26,8 +19,18 @@ export const todosApi = apiClient.injectEndpoints({
         method: "POST",
         body: { data: todo },
       }),
+      invalidatesTags: ["Todo"],
+    }),
+    updateTodo: builder.mutation({
+      query: (todoData) => ({
+        url: `todos/${todoData.id}`,
+        method: "PUT",
+        body: todoData,
+      }),
+      invalidatesTags: (result) => [{ type: "Todo", id: result.id }],
     }),
   }),
 });
 
-export const { useGetTodosQuery, usePostTodoMutation } = todosApi;
+export const { useGetTodosQuery, usePostTodoMutation, useUpdateTodoMutation } =
+  todosApi;

@@ -2,24 +2,36 @@ import { useParams } from "react-router-dom";
 
 import { useGetUsersAndTodos } from "hooks";
 
-import { updateTodo } from "api/updateTodo";
-import { useState } from "react";
+import { useUpdateTodoMutation } from "services/todos";
+import { useEffect, useState } from "react";
 
 import Loader from "components/Loader";
 import { PARAMS } from "routes";
 
 export default function EditTodo() {
   const [newTodoValue, setNewTodoValue] = useState("");
-  const [isUpdateSuccessful, setIsUpdateSuccessful] = useState(undefined);
+  // const [isUpdateSuccessful, setIsUpdateSuccessful] = useState(undefined);
+  const [updateTodo, { error, isError, reset, isSuccess }] =
+    useUpdateTodoMutation();
 
   const { [PARAMS.TODO_ID]: todoId } = useParams();
 
   const {
     data: { todos },
-    errors,
-    isError,
+    errors: getUsersAndTodosErrors,
+    isError: isErrorOnGetUsersAndTodos,
     isLoading,
   } = useGetUsersAndTodos();
+
+  const [currentTodo, setCurrentTodo] = useState("");
+
+  // wait for data to be fetched using useEffect
+
+  useEffect(() => {
+    if (todos && todoId) {
+      setCurrentTodo(findTodoById(todoId));
+    }
+  }, [todos, todoId]);
 
   function findTodoById(id) {
     const todo = todos.find((todo) => todo.id === Number(id));
@@ -27,13 +39,11 @@ export default function EditTodo() {
     return todo;
   }
 
-  const currentTodo = findTodoById(todoId);
-
   const renderError = () => {
     return (
       <div>
         Error
-        {errors.map((error) => {
+        {getUsersAndTodosErrors.map((error) => {
           if (error) return error.status;
         })}
       </div>
@@ -42,18 +52,19 @@ export default function EditTodo() {
 
   function handleChange(event) {
     setNewTodoValue(event.target.value);
-    setIsUpdateSuccessful(undefined);
+    // setIsUpdateSuccessful(undefined);
+    reset();
   }
 
   async function onButtonClick() {
     const newTodoData = { ...currentTodo, data: newTodoValue };
 
-    const updatedTodo = await updateTodo(todoId, newTodoData);
-    setIsUpdateSuccessful(updatedTodo.success);
+    await updateTodo(newTodoData);
+    console.log(newTodoData);
   }
 
   const renderTodo = () => {
-    return isError ? (
+    return isErrorOnGetUsersAndTodos ? (
       renderError()
     ) : (
       <>
@@ -63,12 +74,9 @@ export default function EditTodo() {
           <input type="text" value={newTodoValue} onChange={handleChange} />
           <button onClick={onButtonClick}>Update</button>
 
-          {typeof isUpdateSuccessful === "boolean" &&
-            (isUpdateSuccessful ? (
-              <p>Item updated successfully</p>
-            ) : (
-              <p>Something went wrong</p>
-            ))}
+          {isError && <p>{error.error}</p>}
+          {isErrorOnGetUsersAndTodos && <p></p>}
+          {isSuccess && <p>Item updated successfully: " {newTodoValue} "</p>}
         </div>
       </>
     );
