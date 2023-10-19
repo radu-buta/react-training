@@ -10,7 +10,7 @@ import { PARAMS } from "routes";
 
 export default function EditTodo() {
   const [newTodoValue, setNewTodoValue] = useState("");
-  // const [isUpdateSuccessful, setIsUpdateSuccessful] = useState(undefined);
+
   const [updateTodo, { error, isError, reset, isSuccess }] =
     useUpdateTodoMutation();
 

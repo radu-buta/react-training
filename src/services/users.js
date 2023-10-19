@@ -1,6 +1,6 @@
-import apiClient from "./api";
+import todosAndUsersClient from "./api";
 
-export const usersApi = apiClient.injectEndpoints({
+export const usersApi = todosAndUsersClient.injectEndpoints({
   endpoints: (builder) => ({
     getUsers: builder.query({
       query: () => ({ url: "users" }),

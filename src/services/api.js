@@ -1,11 +1,12 @@
-import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const baseQuery = fetchBaseQuery({ baseUrl: "http://localhost:3001/" });
 
-const apiClient = createApi({
+const todosAndUsersClient = createApi({
+  reducerPath: "todo-and-user-endpoint",
   baseQuery,
   endpoints: () => ({}),
   tagTypes: ["Todo", "User"],
 });
 
-export default apiClient;
+export default todosAndUsersClient;

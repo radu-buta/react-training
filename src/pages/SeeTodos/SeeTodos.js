@@ -1,11 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import * as routes from "../../routes";
 
-import { updateTodo } from "api/updateTodo";
+import { useUpdateTodoMutation } from "services/todos";
 import Loader from "components/Loader";
 import { useGetUsersAndTodos } from "hooks";
 
 export default function SeeTodos() {
+  const [updateTodo] = useUpdateTodoMutation();
+
   const navigate = useNavigate();
 
   const {
@@ -20,13 +22,13 @@ export default function SeeTodos() {
     return userFound;
   }
 
-  function handleChange(event) {
+  async function handleChange(event) {
     const todoId = Number(event.target.id);
     const userId = Number(event.target.value);
     const todoData = todos.find((todo) => Number(todo.id) === todoId);
     const newTodoData = { ...todoData, assignedTo: userId };
 
-    updateTodo(todoId, newTodoData);
+    await updateTodo(newTodoData);
   }
 
   const onButtonClick = (event) => {
@@ -37,6 +39,7 @@ export default function SeeTodos() {
   const renderUserSelector = ({ todoId }) => {
     return (
       <select id={todoId} style={{ marginLeft: 8 }} onChange={handleChange}>
+        <option value="">--Please Select an option--</option>
         {users.map((user) => {
           return (
             <option key={user.id} value={user.id}>
